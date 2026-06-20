@@ -159,6 +159,8 @@
 
   environment.variables = {
     "__GL_SHADER_DISK_CACHE_SIZE" = "12000000000";
+    ELECTRON_OZONE_PLATFORM_HINT = "auto";
+    QT_QPA_PLATFORMTHEME = "qt5ct";
   };
   # Strawberry fix
   environment.sessionVariables.XDG_DATA_DIRS = [ "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}" "${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}" ];
