@@ -4,7 +4,7 @@
   qt = {
     enable = true;
     platformTheme.name = "qtct";
-    style.name = "adwaita-dark"; # можно сменить на "fusion", см. примечание в чате
+    style.name = "mono"; # можно сменить на "fusion", см. примечание в чате
 
     # Нативная опция home-manager: пишет прямо в ~/.config/qt5ct/qt5ct.conf
     # Списки транслируются в CSV-строку автоматически, шрифты — в кавычках как есть.

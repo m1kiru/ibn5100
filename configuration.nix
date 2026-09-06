@@ -10,7 +10,6 @@ in
     [
       ./hardware-configuration.nix
       ./modules
-     #./zed.nix
     ];
   # Zram
   zramSwap = {
