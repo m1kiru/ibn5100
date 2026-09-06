@@ -38,7 +38,7 @@
 
         network = {
           # interface = "wlp2*";
-          format-wifi = "{essid} ({signalStrength}%) ";
+          format-wifi = "{essid} ({signalStrength}%) ";
           format-ethernet = "{ipaddr}/{cidr} 󰊗";
           tooltip-format = "{ifname} via {gwaddr} 󰊗";
           format-linked = "{ifname} (No IP) 󰊗";
@@ -49,19 +49,19 @@
         pulseaudio = {
           # scroll-step = 10;
           format = "{volume}% {icon} {format_source}";
-          format-bluetooth = "{volume}% {icon} {format_source}";
-          format-bluetooth-muted = "󰅶 {icon} {format_source}";
+          format-bluetooth = "{volume}% {icon} {format_source}";
+          format-bluetooth-muted = "󰅶 {icon} {format_source}";
           format-muted = "󰅶 {format_source}";
-          format-source = "{volume}% ";
-          format-source-muted = "";
+          format-source = "{volume}% ";
+          format-source-muted = "";
           format-icons = {
-            headphone = "";
+            headphone = "";
             hands-free = "󰂑";
             headset = "󰂑";
-            phone = "";
-            portable = "";
-            car = "";
-            default = [ "" "" "" ];
+            phone = "";
+            portable = "";
+            car = "";
+            default = ["" "" ""];
           };
           on-click = "pavucontrol";
         };
