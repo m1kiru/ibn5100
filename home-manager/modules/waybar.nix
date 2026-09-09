@@ -17,6 +17,7 @@
         modules-center = [ "niri/window" ];
         modules-right = [
           "tray"
+          "cava"
           "pulseaudio"
           "network"
           "niri/language"
@@ -28,6 +29,10 @@
           spacing = 15;
         };
 
+        cava = {
+          framerate = 60;
+          sesitivity = 50;
+        };
         clock = {
           # timezone = "Asia/Yekaterinburg";
           format = "{:%H:%M:%S %Y.%m.%d}";
