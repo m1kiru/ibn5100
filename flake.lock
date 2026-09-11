@@ -36,6 +36,26 @@
         "type": "github"
       }
     },
+    "fetch": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1788226167,
+        "narHash": "sha256-DGyLA8UeLZR43J/750spUQkWm3IybBJZfXOkWfHv0HQ=",
+        "owner": "areofyl",
+        "repo": "fetch",
+        "rev": "2da88663ecb12aa919db1874ab939aec7bfd5493",
+        "type": "github"
+      },
+      "original": {
+        "owner": "areofyl",
+        "repo": "fetch",
+        "type": "github"
+      }
+    },
     "flake-schemas": {
       "locked": {
         "lastModified": 1780327564,
@@ -196,6 +216,7 @@
       "inputs": {
         "anidesk": "anidesk",
         "chaotic": "chaotic",
+        "fetch": "fetch",
         "freesmlauncher": "freesmlauncher",
         "home-manager": "home-manager_2",
         "nixpkgs": "nixpkgs_3",
