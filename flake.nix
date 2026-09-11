@@ -28,8 +28,6 @@
 
           ./configuration.nix
 
-	  
-
           {
             nixpkgs.pkgs = import nixpkgs {
               system = "x86_64-linux";
@@ -61,7 +59,15 @@
           # zen-browser module
           ({ pkgs, ... }: {
             environment.systemPackages = [
-              zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
+              (pkgs.symlinkJoin {
+                name = "zen-browser-with-ffmpeg";
+                paths = [ zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default ];
+                buildInputs = [ pkgs.makeWrapper ];
+                postBuild = ''
+                  wrapProgram $out/bin/zen \
+                    --prefix LD_LIBRARY_PATH : "${pkgs.ffmpeg-full.lib}/lib"
+                '';
+              })
             ];
           })
           # zen-browser module
@@ -88,7 +94,7 @@
           home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              extraSpecialArgs = { inherit inputs; }; #If you want access to inputs in your home.nix
+              extraSpecialArgs = { inherit inputs; };
               users.makiru = ./home.nix; 
             };
           }

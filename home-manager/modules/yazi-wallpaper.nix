@@ -4,60 +4,74 @@ let
   set-wallpaper = pkgs.writeShellScriptBin "yazi-set-wallpaper" ''
     set -euo pipefail
 
-    file="$1"
-    ext="''${file##*.}"
-    ext_lower=$(echo "$ext" | tr '[:upper:]' '[:lower:]')
+    file="$(readlink -f "$1")"
+    ext_lower="''${file##*.}"
+    ext_lower="''${ext_lower,,}"
 
     STATE_FILE="$HOME/.cache/wallpaper-state"
     mkdir -p "$(dirname "$STATE_FILE")"
 
-    # Останавливаем оба бэкенда безусловно — иначе они могут конфликтовать
-    # за один и тот же layer-surface (например, оставшийся awww-daemon
-    # поверх нового видео от mpvpaper, или наоборот).
-    ${pkgs.procps}/bin/pkill mpvpaper 2>/dev/null || true
-    ${pkgs.procps}/bin/pkill awww-daemon 2>/dev/null || true
+    kill_backend() {
+      local name="$1"
+      ${pkgs.procps}/bin/pkill -TERM "$name" 2>/dev/null || true
+
+      local i
+      for i in {1..10}; do
+        ${pkgs.procps}/bin/pgrep "$name" >/dev/null 2>&1 || break
+        sleep 0.05
+      done
+
+      if ${pkgs.procps}/bin/pgrep "$name" >/dev/null 2>&1; then
+        ${pkgs.procps}/bin/pkill -KILL "$name" 2>/dev/null || true
+        sleep 0.1
+      fi
+    }
+
+    kill_backend mpvpaper
+    kill_backend awww-daemon
+
     sleep 0.2
+    rm -f "''${XDG_RUNTIME_DIR:-/tmp}/awww.sock" 2>/dev/null || true
 
     case "$ext_lower" in
       mp4|webm|mkv|mov)
-        # Видео — через mpvpaper, без звука, зациклено
-        nohup ${pkgs.mpvpaper}/bin/mpvpaper -o "no-audio loop-file=inf hwdec=auto" '*' "$file" \
-          >/tmp/mpvpaper.log 2>&1 &
-        disown
-        ;;
-      gif)
-        # GIF — awww умеет анимации нативно
-        ${pkgs.awww}/bin/awww-daemon &
-        sleep 0.5
-        ${pkgs.awww}/bin/awww img "$file" --transition-type grow --transition-duration 0.4
+        setsid ${pkgs.mpvpaper}/bin/mpvpaper \
+          -o "no-audio loop-file=inf hwdec=auto" \
+          '*' "$file" </dev/null >/tmp/mpvpaper.log 2>&1 &
         ;;
       *)
-        # Статичные картинки — через awww
-        ${pkgs.awww}/bin/awww-daemon &
-        sleep 0.5
-        ${pkgs.awww}/bin/awww img "$file" --transition-type grow --transition-duration 0.4
+        setsid ${pkgs.awww}/bin/awww-daemon \
+          </dev/null >/tmp/awww-daemon.log 2>&1 &
+
+        ready=0
+        for i in {1..50}; do
+          if ${pkgs.awww}/bin/awww query >/dev/null 2>&1; then
+            ready=1
+            break
+          fi
+          sleep 0.1
+        done
+
+        if [ "$ready" -ne 1 ]; then
+          echo "awww-daemon failed to become ready" >&2
+          exit 1
+        fi
+
+        ${pkgs.awww}/bin/awww img "$file" \
+          --transition-type grow \
+          --transition-duration 0.4
         ;;
     esac
 
-    # Сохраняем путь и тип для восстановления при следующем входе в сессию
     echo "$file" > "$STATE_FILE"
   '';
 
   restore-wallpaper = pkgs.writeShellScriptBin "restore-wallpaper" ''
     set -euo pipefail
-
     STATE_FILE="$HOME/.cache/wallpaper-state"
-
-    if [ ! -f "$STATE_FILE" ]; then
-      exit 0
-    fi
-
-    file=$(cat "$STATE_FILE")
-
-    if [ ! -f "$file" ]; then
-      exit 0
-    fi
-
+    [ -f "$STATE_FILE" ] || exit 0
+    file="$(cat "$STATE_FILE")"
+    [ -f "$file" ] || exit 0
     exec ${set-wallpaper}/bin/yazi-set-wallpaper "$file"
   '';
 in
@@ -85,14 +99,12 @@ in
       };
     };
 
-    keymap = {
-      mgr.prepend_keymap = [
-        {
-          on = [ "w" ];
-          run = "shell --confirm -- yazi-set-wallpaper %h";
-          desc = "Set hovered file as wallpaper";
-        }
-      ];
-    };
+    keymap.mgr.prepend_keymap = [
+      {
+        on = [ "p" ];
+        run = "shell --confirm -- yazi-set-wallpaper %h";
+        desc = "Set hovered file as wallpaper";
+      }
+    ];
   };
 }

@@ -17,7 +17,6 @@
         modules-center = [ "niri/window" ];
         modules-right = [
           "tray"
-          "cava"
           "pulseaudio"
           "network"
           "niri/language"
@@ -29,10 +28,6 @@
           spacing = 15;
         };
 
-        cava = {
-          framerate = 60;
-          sesitivity = 50;
-        };
         clock = {
           # timezone = "Asia/Yekaterinburg";
           format = "{:%H:%M:%S %Y.%m.%d}";
@@ -79,7 +74,10 @@
           font-family: FontAwesome_7, IBM Plex Mono;
           font-size: 15px;
       }
-
+      /*:root {
+          --main-color: rgba(0, 0, 0, 1.0);
+          --font-color: rgb(255 ,255, 255);
+      }*/
       window#waybar {
           background-color: rgba(0, 0, 0, 0.5);
           color: #ffffff;

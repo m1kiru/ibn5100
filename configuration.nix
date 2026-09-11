@@ -52,19 +52,21 @@ in
   # Mount ntfs drives
   fileSystems =
     let
-      ntfs-drives = [
-  	"/media/games"
-        "/media/forgames"
-        "/media/fordocs"
-      ];
+      ntfs-drives = {
+        "/media/games" = "062AB6DB2AB6C6C9";
+        "/media/forgames" = "E0460FB0460F868E";
+        "/media/fordocs" = "70CA5A11CA59D3C6";
+      };
     in
-    lib.genAttrs ntfs-drives (path: {
+    lib.mapAttrs (path: uuid: {
+      device = "/dev/disk/by-uuid/${uuid}";
+      fsType = "ntfs";
       options = [
         "uid=1000"
         "nofail"
       ];
-    });
-  # Kernel
+    }) ntfs-drives;  
+# Kernel
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
   # Define your hostname.
   networking.hostName = "ibn5100";
@@ -234,6 +236,7 @@ in
     qdiskinfo
     rpcs3
     localsend
+    scrcpy
     (nvidiaLegacy580Free.settings.overrideAttrs (old: {
       meta = old.meta // { license = lib.licenses.mit; };
     }))

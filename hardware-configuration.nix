@@ -24,21 +24,6 @@
       options = [ "fmask=0022" "dmask=0022" ];
     };
 
-  fileSystems."/media/games" =
-    { device = "/dev/disk/by-uuid/062AB6DB2AB6C6C9";
-      fsType = "ntfs3";
-    };
-
-  fileSystems."/media/forgames" =
-    { device = "/dev/disk/by-uuid/E0460FB0460F868E";
-      fsType = "ntfs3";
-    };
-
-  fileSystems."/media/fordocs" =
-    { device = "/dev/disk/by-uuid/70CA5A11CA59D3C6";
-      fsType = "ntfs3";
-    };
-
   swapDevices = [ ];
 
   #nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
