@@ -3,6 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    fetch = { 
+      url = "github:areofyl/fetch";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     anidesk.url = "path:/media/games/anidesk";
     zen-browser = {
@@ -19,7 +23,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, chaotic, anidesk, zen-browser, freesmlauncher, home-manager,... } @ inputs: {
+  outputs = { self, nixpkgs, chaotic, anidesk, zen-browser, freesmlauncher, fetch, home-manager,... } @ inputs: {
     nixosConfigurations = {
       ibn5100 = nixpkgs.lib.nixosSystem {
         #system = "x86_64-linux";
@@ -71,7 +75,15 @@
             ];
           })
           # zen-browser module
-
+          
+          # fetch module
+          ({ pkgs, ... }: {
+            environment.systemPackages = [
+              fetch.packages.${pkgs.stdenv.hostPlatform.system}.default
+            ];
+          })
+          # fetch module
+          
           # freesm module
           ({ pkgs, ... }: {
             environment.systemPackages = [
