@@ -237,6 +237,9 @@ in
     rpcs3
     localsend
     scrcpy
+    audiosource
+    stoat-desktop
+    discord
     (nvidiaLegacy580Free.settings.overrideAttrs (old: {
       meta = old.meta // { license = lib.licenses.mit; };
     }))

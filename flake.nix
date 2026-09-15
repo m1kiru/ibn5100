@@ -2,6 +2,7 @@
   description = "makiru's ibn5100 conf";
 
   inputs = {
+    nixpkgs-xwayland-satellite-pin.url = "github:NixOS/nixpkgs/edfd59b795cd752c36d2dae60870cffcd23d3fb1"; 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     fetch = { 
       url = "github:areofyl/fetch";
@@ -23,7 +24,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, chaotic, anidesk, zen-browser, freesmlauncher, fetch, home-manager,... } @ inputs: {
+  outputs = { self, nixpkgs, chaotic, anidesk, zen-browser, freesmlauncher, fetch, home-manager, nixpkgs-xwayland-satellite-pin, ... } @ inputs: {
     nixosConfigurations = {
       ibn5100 = nixpkgs.lib.nixosSystem {
         #system = "x86_64-linux";
@@ -36,7 +37,10 @@
             nixpkgs.pkgs = import nixpkgs {
               system = "x86_64-linux";
               config = { allowUnfree = true; };
-              overlays = [ chaotic.overlays.cache-friendly ];
+              overlays = [ 
+                chaotic.overlays.cache-friendly
+                 (final: prev: { xwayland-satellite = (import nixpkgs-xwayland-satellite-pin { system = "x86_64-linux"; config.allowUnfree = true; }).xwayland-satellite; })
+              ];
             };
             chaotic.nyx.overlay.enable = false;
           }          
