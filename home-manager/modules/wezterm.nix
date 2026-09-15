@@ -38,7 +38,7 @@
     settings = {
       color_scheme = "ibn5100";
       hide_tab_bar_if_only_one_tab = true;
-      font = lib.generators.mkLuaInLine ''wezterm.font("IBM Plex Mono")'';
+      font = lib.generators.mkLuaInline ''wezterm.font("IBM Plex Mono")'';
       
     };
   };
