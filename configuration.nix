@@ -25,6 +25,8 @@ in
       device = "nodev";
       efiSupport = true;
     #  useOSProber = true;
+      gfxmodeEfi = "1920x1080";
+      gfxmodeBios = "1920x1080";    
     };
     efi.canTouchEfiVariables = true;
   };
