@@ -51,6 +51,7 @@
             urgent-color "#9b0000"
         }
     }
+    spawn-sh-at-startup "mako"
     spawn-at-startup "waybar"
     spawn-sh-at-startup "sleep 1 && restore-wallpaper"
 
@@ -86,7 +87,7 @@
         Mod+X { spawn "waybar"; }
         XF86Tools allow-when-locked=true { spawn-sh "clementine"; }
         Mod+Shift+Slash { show-hotkey-overlay; }
-        Mod+Return hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty"; }
+        Mod+Return hotkey-overlay-title="Open a Terminal: WezTerm" { spawn "wezterm"; }
         Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
         Mod+B { spawn "zen"; }
         Mod+T { spawn "AyuGram"; }
