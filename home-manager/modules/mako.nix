@@ -10,13 +10,13 @@
 
       width = 350;
       height = 150;
-      margin = "10";
+      margin = "14";
       padding = "10";
 
       border-size = 2;
       border-radius = 0;
 
-      background-color = "#000000B3"; # чёрный, ~70% непрозрачности — в стиле твоего waybar/fuzzel
+      background-color = "#000000B3"; 
       border-color = "#FFFFFF";
       text-color = "#FFFFFF";
       progress-color = "over #FFFFFF";
@@ -24,8 +24,8 @@
       default-timeout = 5000;
       ignore-timeout = false;
 
-      layer = "overlay";
-      anchor = "top-right";
+      layer = "top";
+      anchor = "top-center";
 
       icons = true;
       max-icon-size = 48;

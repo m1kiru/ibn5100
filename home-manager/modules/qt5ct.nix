@@ -4,16 +4,14 @@
   qt = {
     enable = true;
     platformTheme.name = "qtct";
-    style.name = "mono"; # можно сменить на "fusion", см. примечание в чате
+    style.name = "mono"; 
 
-    # Нативная опция home-manager: пишет прямо в ~/.config/qt5ct/qt5ct.conf
-    # Списки транслируются в CSV-строку автоматически, шрифты — в кавычках как есть.
     qt5ctSettings = {
       Appearance = {
         color_scheme_path = "/home/makiru/.config/qt5ct/colors/mono.conf";
         custom_palette = true;
         standard_dialogs = "gtk3";
-        style = "Fusion";
+        style = "mono.conf";
       };
       Fonts = {
         fixed = ''"IBM Plex Serif,10,-1,5,50,0,0,0,0,0,Regular"'';
@@ -43,9 +41,6 @@
     qt6Packages.qt6ct
   ];
 
-  # Файл цветовой схемы, на который ссылается color_scheme_path выше.
-  # Это отдельный файл (не покрывается qt5ctSettings), поэтому кладём его
-  # вручную через xdg.configFile.
   xdg.configFile."qt5ct/colors/mono.conf".text = ''
     [ColorScheme]
     active_colors=#ffffff, #000000, #ffffff, #ffffff, #000000, #000000, #ffffff, #ffffff, #ffffff, #000000, #000000, #000000, #ffffff, #000000, #ffffff, #ffffff, #000000, #000000, #000000, #ffffff, #aaaaaa

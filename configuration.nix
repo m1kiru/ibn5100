@@ -242,6 +242,7 @@ in
     audiosource
     stoat-desktop
     discord
+    clock-rs
     (nvidiaLegacy580Free.settings.overrideAttrs (old: {
       meta = old.meta // { license = lib.licenses.mit; };
     }))
