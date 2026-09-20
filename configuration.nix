@@ -34,8 +34,9 @@ in
   programs.bash = {
     shellAliases = {
       lla = "ls -al";
-      rebuild = "sudo nixos-rebuild switch";     
+      rebuild = "sudo nixos-rebuild switch";
       grep = "grep --color";
+      fetch = "fetch --infinite --box --speed 5.0";
     };
   };
   # Flakes
