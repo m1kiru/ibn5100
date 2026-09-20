@@ -87,7 +87,7 @@
         Mod+X { spawn "waybar"; }
         XF86Tools allow-when-locked=true { spawn-sh "clementine"; }
         Mod+Shift+Slash { show-hotkey-overlay; }
-        Mod+Return hotkey-overlay-title="Open a Terminal: WezTerm" { spawn "wezterm"; }
+        Mod+Return hotkey-overlay-title="Open a Terminal: foot" { spawn "foot"; }
         Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
         Mod+B { spawn "zen"; }
         Mod+T { spawn "AyuGram"; }
@@ -97,7 +97,7 @@
         XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
         XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
         XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
-        XF86Calculator       { spawn-sh "kitty -e calc"; }
+        XF86Calculator       { spawn-sh "foot -e calc"; }
         XF86AudioPlay        allow-when-locked=true { spawn-sh "playerctl play-pause"; }
         XF86AudioStop        allow-when-locked=true { spawn-sh "playerctl stop"; }
         XF86AudioPrev        allow-when-locked=true { spawn-sh "playerctl previous"; }
