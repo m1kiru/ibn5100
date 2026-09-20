@@ -11,7 +11,7 @@
         pad = "0x0";
       };
 
-      colors = {
+      "colors-dark" = {
         # background / foreground — как в kitty.nix / alacritty.nix
         alpha = "0.5";
         background = "000000";
