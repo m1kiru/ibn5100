@@ -26,10 +26,28 @@ in
       efiSupport = true;
     #  useOSProber = true;
       gfxmodeEfi = "1920x1080";
-      gfxmodeBios = "1920x1080";    
+      gfxmodeBios = "1920x1080";
     };
     efi.canTouchEfiVariables = true;
   };
+  # Qt — системная тема mono (через qt5ct/qt6ct, стандарт для всей системы)
+  qt = {
+    enable = true;
+    platformTheme = "qt5ct";
+  };
+  environment.etc."xdg/qt5ct/colors/mono.conf".text = ''
+    [ColorScheme]
+    active_colors=#ffffff, #000000, #ffffff, #ffffff, #000000, #000000, #ffffff, #ffffff, #ffffff, #000000, #000000, #000000, #ffffff, #000000, #ffffff, #ffffff, #000000, #000000, #000000, #ffffff, #aaaaaa
+    inactive_colors=#aaaaaa, #000000, #ffffff, #ffffff, #000000, #000000, #aaaaaa, #ffffff, #aaaaaa, #000000, #000000, #000000, #aaaaaa, #000000, #aaaaaa, #aaaaaa, #000000, #000000, #000000, #ffffff, #777777
+    disabled_colors=#555555, #000000, #333333, #222222, #000000, #000000, #555555, #888888, #555555, #000000, #000000, #000000, #333333, #555555, #555555, #444444, #000000, #000000, #000000, #555555, #444444
+  '';
+  environment.etc."xdg/qt6ct/colors/mono.conf".text = ''
+    [ColorScheme]
+    active_colors=#ffffff, #000000, #ffffff, #ffffff, #000000, #000000, #ffffff, #ffffff, #ffffff, #000000, #000000, #000000, #ffffff, #000000, #ffffff, #ffffff, #000000, #000000, #000000, #ffffff, #aaaaaa
+    inactive_colors=#aaaaaa, #000000, #ffffff, #ffffff, #000000, #000000, #aaaaaa, #ffffff, #aaaaaa, #000000, #000000, #000000, #aaaaaa, #000000, #aaaaaa, #aaaaaa, #000000, #000000, #000000, #ffffff, #777777
+    disabled_colors=#555555, #000000, #333333, #222222, #000000, #000000, #555555, #888888, #555555, #000000, #000000, #000000, #333333, #555555, #555555, #444444, #000000, #000000, #000000, #555555, #444444
+  '';
+
   # Bash
   programs.bash = {
     shellAliases = {
@@ -68,7 +86,7 @@ in
         "uid=1000"
         "nofail"
       ];
-    }) ntfs-drives;  
+    }) ntfs-drives;
 # Kernel
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
   # Define your hostname.
@@ -141,12 +159,12 @@ in
     dedicatedServer.openFirewall = true;
     extraCompatPackages = [ pkgs.proton-cachyos_x86_64_v3 ];
   };
-  programs.gamemode.enable = true; 
+  programs.gamemode.enable = true;
   programs.gamescope = {
     enable = true;
     enableWsi = true;
     capSysNice = false;
-  }; 
+  };
   # web.io.vision
   services.udev.extraRules = ''
     SUBSYSTEM=="usb", ATTR{idVendor}=="0c45", ATTR{idProduct}=="fefe", MODE="0666"
@@ -178,7 +196,7 @@ in
     extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [ ];
   };
-  
+
   # Fonts
   fonts = {
     packages = with pkgs; [
@@ -276,12 +294,12 @@ in
   # services.openssh.enable = true;
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [
-    53317
-  ];
-  networking.firewall.allowedUDPPorts = [
-    53317
-  ];
+  # networking.firewall.allowedTCPPorts = [
+  #
+  # ];
+  # networking.firewall.allowedUDPPorts = [
+  #
+  # ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
