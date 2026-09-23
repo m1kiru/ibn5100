@@ -68,6 +68,11 @@ in
     enable = true;
     libraries = with pkgs; [
       icu
+      glib
+      nspr
+      nss
+      atk
+      jq
     ];
   };
   # Mount ntfs drives
