@@ -17,7 +17,7 @@ let
       pango cairo libxcomposite libxdamage libxfixes libxrandr
       libxcb libx11 libxext libXScrnSaver libXtst
       libnotify libsecret
-      xorg.libxshmfence
+      libxshmfence
     ];
 
     unpackPhase = ''
@@ -31,7 +31,8 @@ let
       mkdir -p $out/share
       chmod +x $out/opt/AnixApp/anixapp
       mkdir -p $out/bin
-      makeWrapper $out/opt/AnixApp/anixapp $out/bin/anixapp
+      makeWrapper $out/opt/AnixApp/anixapp $out/bin/anixapp \
+        --add-flags --no-sandbox
       substituteInPlace $out/share/applications/anixapp.desktop \
         --replace-fail "/opt/AnixApp/anixapp" "$out/bin/anixapp"
     '';
