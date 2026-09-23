@@ -18,7 +18,10 @@ let
       libxcb libx11 libxext libXScrnSaver libXtst
       libnotify libsecret
       libxshmfence
+      gsettings-desktop-schemas gtk3
     ];
+
+    dontWrapGApps = true;
 
     unpackPhase = ''
       dpkg-deb --fsys-tarfile $src | tar -xvf - > /dev/null
@@ -35,8 +38,10 @@ let
         --add-flags "--no-sandbox" \
         --add-flags "--enable-unsafe-webgpu" \
         --add-flags "--ozone-platform-hint=auto" \
-        --add-flags "--use-angle=vulkan" \
-        --add-flags "--enable-features=Vulkan,VulkanFromANGLE,WebGPU"
+        --prefix XDG_DATA_DIRS : "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}" \
+        --prefix XDG_DATA_DIRS : "${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}" \
+        --set GDK_BACKEND "wayland,x11" \
+        --set NVD_BACKEND "direct"
       substituteInPlace $out/share/applications/anixapp.desktop \
         --replace-fail "/opt/AnixApp/anixapp" "$out/bin/anixapp"
     '';
