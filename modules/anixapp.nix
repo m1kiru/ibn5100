@@ -32,7 +32,11 @@ let
       chmod +x $out/opt/AnixApp/anixapp
       mkdir -p $out/bin
       makeWrapper $out/opt/AnixApp/anixapp $out/bin/anixapp \
-        --add-flags --no-sandbox
+        --add-flags "--no-sandbox" \
+        --add-flags "--enable-unsafe-webgpu" \
+        --add-flags "--ozone-platform-hint=auto" \
+        --add-flags "--use-angle=vulkan" \
+        --add-flags "--enable-features=Vulkan,VulkanFromANGLE,WebGPU"
       substituteInPlace $out/share/applications/anixapp.desktop \
         --replace-fail "/opt/AnixApp/anixapp" "$out/bin/anixapp"
     '';
