@@ -35,9 +35,8 @@ let
       chmod +x $out/opt/AnixApp/anixapp
       mkdir -p $out/bin
       makeWrapper $out/opt/AnixApp/anixapp $out/bin/anixapp \
+        --run 'LOCK="$HOME/.config/anixapp/SingletonLock"; if [ -L "$LOCK" ]; then T=$(readlink "$LOCK" 2>/dev/null); PID=$(echo "$T" | sed -n "s/.*-\\([0-9]*\\)$/\\1/p"); if [ -n "$PID" ] && ! kill -0 "$PID" 2>/dev/null; then rm -f "$HOME/.config/anixapp/SingletonLock" "$HOME/.config/anixapp/SingletonCookie" "$HOME/.config/anixapp/SingletonSocket" 2>/dev/null; fi; fi' \
         --add-flags "--no-sandbox" \
-        --add-flags "--enable-unsafe-webgpu" \
-        --add-flags "--ozone-platform-hint=auto" \
         --prefix LD_LIBRARY_PATH : "${pkgs.vulkan-loader}/lib" \
         --prefix XDG_DATA_DIRS : "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}" \
         --prefix XDG_DATA_DIRS : "${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}" \
