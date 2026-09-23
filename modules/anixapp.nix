@@ -15,7 +15,7 @@ let
       gtk3 nss alsa-lib at-spi2-atk at-spi2-core cups dbus
       expat libdrm libxkbcommon mesa nspr
       pango cairo libxcomposite libxdamage libxfixes libxrandr
-      libxcb libx11 libxext libxScrnSaver libXtst
+      libxcb libx11 libxext libXScrnSaver libXtst
       libnotify libsecret
       xorg.libxshmfence
     ];
