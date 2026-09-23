@@ -81,6 +81,10 @@
         match namespace="mpvpaper"
         place-within-backdrop true
     }
+    window-rule {
+        match app-id="steam" title=r#"^notificationtoasts_\d+_desktop$"#
+        default-floating-position x=10 y=10 relative-to="bottom-right"
+    }
 
     binds {
         Mod+Z { spawn-sh "pkill waybar"; }
