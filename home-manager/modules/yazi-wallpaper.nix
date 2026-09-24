@@ -10,7 +10,6 @@ let
     SETSID=${pkgs.util-linux}/bin/setsid
     MPVPAPER=${pkgs.mpvpaper}/bin/mpvpaper
     AWWW=${pkgs.awww}/bin/awww
-    AWWWD=${pkgs.awww}/bin/awww-daemon
 
     file="''${1:?usage: yazi-set-wallpaper FILE}"
     file="$(readlink -f -- "$file" 2>/dev/null || realpath -- "$file")"
@@ -30,11 +29,14 @@ let
     if [[ -f "$STATE_FILE" ]]; then
       last="$(cat "$STATE_FILE" 2>/dev/null || true)"
       if [[ "$last" == "$file" ]]; then
-        # проверяем что бэкенд реально жив — иначе перенакатываем
         ext_lc="''${file##*.}"; ext_lc="''${ext_lc,,}"
-        case "$ext_lc" in mp4|webm|mkv|mov|m4v|avi)
-          $PGREP -x mpvpaper >/dev/null 2>&1 && exit 0 ;;
-          *) $PGREP -x awww-daemon >/dev/null 2>&1 && exit 0 ;;
+        case "$ext_lc" in
+          mp4|webm|mkv|mov|m4v|avi)
+            $PGREP -x mpvpaper >/dev/null 2>&1 && exit 0
+            ;;
+          *)
+            $PGREP -x awww-daemon >/dev/null 2>&1 && exit 0
+            ;;
         esac
       fi
     fi
@@ -71,43 +73,26 @@ let
     }
 
     if (( is_video )); then
-      # видео: глушим только если нужно
-      $PGREP -x awww-daemon >/dev/null 2>&1 && { stop_backend awww-daemon; rm -f "$RUNTIME/awww.sock"; }
+      # видео: глушим awww-daemon (systemd автоперезапуск не мешает), mpvpaper
+      $PGREP -x awww-daemon >/dev/null 2>&1 && stop_backend awww-daemon
       $PGREP -x mpvpaper   >/dev/null 2>&1 && stop_backend mpvpaper
       $SETSID $MPVPAPER -o "no-audio loop-file=inf hwdec=auto" '*' "$file" </dev/null >"$RUNTIME/mpvpaper.log" 2>&1 &
-      # не ждём — mpvpaper сам подхватит, save сразу
       disown 2>/dev/null || true
     else
-      # картинка: mpvpaper мешает — глушим, awww-daemon переиспользуем
+      # картинка: глушим mpvpaper, полагаемся на systemd-сервис awww-daemon
       $PGREP -x mpvpaper >/dev/null 2>&1 && stop_backend mpvpaper
 
-      if $PGREP -x awww-daemon >/dev/null 2>&1; then
-        # быстрый путь: демон жив — пробуем 1 раз, при ошибке перезапускаем
-        if ! $AWWW img "$file" --transition-type simple --transition-duration 0.06 2>/dev/null; then
-          echo "yazi-set-wallpaper: awww не ответил, перезапуск..." >&2
-          stop_backend awww-daemon; rm -f "$RUNTIME/awww.sock"
-          $SETSID $AWWWD </dev/null >"$RUNTIME/awww-daemon.log" 2>&1 &
-          for ((i=0;i<50;i++)); do
-            $AWWW query >/dev/null 2>&1 && break
-            sleep 0.02
-          done
-          $AWWW img "$file" --transition-type simple --transition-duration 0.06
-        fi
-      else
-        rm -f "$RUNTIME/awww.sock"
-        $SETSID $AWWWD </dev/null >"$RUNTIME/awww-daemon.log" 2>&1 &
-        ok=0
-        for ((i=0;i<50;i++)); do
-          if $AWWW query >/dev/null 2>&1; then ok=1; break; fi
-          sleep 0.02
-        done
-        if (( ! ok )); then
-          echo "awww-daemon не запустился, лог: $RUNTIME/awww-daemon.log" >&2
-          cat "$RUNTIME/awww-daemon.log" >&2 || true
-          exit 1
-        fi
-        $AWWW img "$file" --transition-type simple --transition-duration 0.06
+      # ждём, пока systemd поднимет awww-daemon (если он был убит при переходе с видео)
+      ok=0
+      for ((i=0;i<100;i++)); do
+        if $AWWW query >/dev/null 2>&1; then ok=1; break; fi
+        sleep 0.02
+      done
+      if (( ! ok )); then
+        echo "yazi-set-wallpaper: awww-daemon не доступен после 2с ожидания" >&2
+        exit 1
       fi
+      $AWWW img "$file" --transition-type simple --transition-duration 0.06
     fi
 
     save_state
