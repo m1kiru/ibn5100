@@ -10,6 +10,7 @@ let
     SETSID=${pkgs.util-linux}/bin/setsid
     MPVPAPER=${pkgs.mpvpaper}/bin/mpvpaper
     AWWW=${pkgs.awww}/bin/awww
+    SYSTEMCTL=${pkgs.systemd}/bin/systemctl
 
     file="''${1:?usage: yazi-set-wallpaper FILE}"
     file="$(readlink -f -- "$file" 2>/dev/null || realpath -- "$file")"
@@ -73,16 +74,17 @@ let
     }
 
     if (( is_video )); then
-      # видео: глушим awww-daemon (systemd автоперезапуск не мешает), mpvpaper
-      $PGREP -x awww-daemon >/dev/null 2>&1 && stop_backend awww-daemon
-      $PGREP -x mpvpaper   >/dev/null 2>&1 && stop_backend mpvpaper
+      # видео: останавливаем awww-daemon через systemd (без автоперезапуска), глушим старый mpvpaper
+      $SYSTEMCTL --user stop awww-daemon.service 2>/dev/null || true
+      $PGREP -x mpvpaper >/dev/null 2>&1 && stop_backend mpvpaper
       $SETSID $MPVPAPER -o "no-audio loop-file=inf hwdec=auto" '*' "$file" </dev/null >"$RUNTIME/mpvpaper.log" 2>&1 &
       disown 2>/dev/null || true
     else
-      # картинка: глушим mpvpaper, полагаемся на systemd-сервис awww-daemon
+      # картинка: глушим mpvpaper, стартуем awww-daemon через systemd
       $PGREP -x mpvpaper >/dev/null 2>&1 && stop_backend mpvpaper
+      $SYSTEMCTL --user start awww-daemon.service 2>/dev/null || true
 
-      # ждём, пока systemd поднимет awww-daemon (если он был убит при переходе с видео)
+      # ждём готовности демона
       ok=0
       for ((i=0;i<100;i++)); do
         if $AWWW query >/dev/null 2>&1; then ok=1; break; fi
