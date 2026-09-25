@@ -79,9 +79,9 @@ in
   fileSystems =
     let
       ntfs-drives = {
-        "/media/games" = "062AB6DB2AB6C6C9";
-        "/media/forgames" = "E0460FB0460F868E";
-        "/media/fordocs" = "70CA5A11CA59D3C6";
+        "/mnt/games" = "062AB6DB2AB6C6C9";
+        "/mnt/forgames" = "E0460FB0460F868E";
+        "/mnt/fordocs" = "70CA5A11CA59D3C6";
       };
     in
     lib.mapAttrs (path: uuid: {
@@ -267,6 +267,8 @@ in
     stoat-desktop
     discord
     clock-rs
+    btrfs-progs
+    claude-code
     (nvidiaLegacy580Free.settings.overrideAttrs (old: {
       meta = old.meta // { license = lib.licenses.mit; };
     }))
