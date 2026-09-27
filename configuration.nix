@@ -10,6 +10,7 @@ in
     [
       ./hardware-configuration.nix
       ./modules
+      #./modules/ports.nix
     ];
   # Zram
   zramSwap = {
@@ -120,7 +121,11 @@ in
         };
       };
 # Kernel
-  boot.kernelPackages = pkgs.linuxPackages_cachyos;
+  boot = {
+    kernelPackages = pkgs.linuxPackages_cachyos;
+    extraModulePackages = with config.boot.kernelPackages; [ amneziawg ];
+    kernelModules = [ "amneziawg" ];
+  };
   # Define your hostname.
   networking.hostName = "ibn5100";
   # niri
@@ -296,6 +301,8 @@ in
     clock-rs
     btrfs-progs
     claude-code
+    amneziawg-go
+    amneziawg-tools
     (nvidiaLegacy580Free.settings.overrideAttrs (old: {
       meta = old.meta // { license = lib.licenses.mit; };
     }))
