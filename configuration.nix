@@ -113,6 +113,11 @@ in
           fsType = "btrfs";
           options = [ "subvol=@music" "nofail" ];
         };
+        "/home/makiru/data-games" = {
+          device = "/dev/disk/by-uuid/88c17ed8-7b9c-405c-a88f-f29833f70d7c";
+          fsType = "btrfs";
+          options = [ "subvol=@data-games" "nofail" ];
+        };
       };
 # Kernel
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
