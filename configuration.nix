@@ -315,7 +315,7 @@ in
   #programs.appimage.enable = true;
   #programs.appimage.binfmt = true;
   # Flatpak
-  services.flatpak.enable = true;
+  #services.flatpak.enable = true;
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -326,16 +326,6 @@ in
   # List services that you want to enable:
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [
-  #
-  # ];
-  # networking.firewall.allowedUDPPorts = [
-  #
-  # ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   system = {
     stateVersion = "26.05";
