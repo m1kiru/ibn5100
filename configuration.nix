@@ -75,23 +75,45 @@ in
       jq
     ];
   };
-  # Mount ntfs drives
-  fileSystems =
-    let
-      ntfs-drives = {
-        "/mnt/games" = "062AB6DB2AB6C6C9";
-        "/mnt/forgames" = "E0460FB0460F868E";
-        "/mnt/fordocs" = "70CA5A11CA59D3C6";
+  # Mount ntfs drives + btrfs subvolumes на одном диске
+    fileSystems =
+      let
+        ntfs-drives = {
+          "/mnt/games"    = "062AB6DB2AB6C6C9";
+          "/mnt/forgames" = "E0460FB0460F868E";
+        };
+      in
+      lib.mapAttrs (path: uuid: {
+        device = "/dev/disk/by-uuid/${uuid}";
+        fsType = "ntfs";
+        options = [ "uid=1000" "nofail" ];
+      }) ntfs-drives // {
+        "/home/makiru/Documents" = {
+          device = "/dev/disk/by-uuid/88c17ed8-7b9c-405c-a88f-f29833f70d7c";
+          fsType = "btrfs";
+          options = [ "subvol=@docs" "compress=zstd:1" "nofail" ];
+        };
+        "/home/makiru/Media" = {
+          device = "/dev/disk/by-uuid/88c17ed8-7b9c-405c-a88f-f29833f70d7c";
+          fsType = "btrfs";
+          options = [ "subvol=@media" "compress=zstd:3" "nofail" ];
+        };
+        "/mnt/important" = {
+          device = "/dev/disk/by-uuid/88c17ed8-7b9c-405c-a88f-f29833f70d7c";
+          fsType = "btrfs";
+          options = [ "subvol=@important" "compress=zstd:3" "nofail" ];
+        };
+        "/mnt/pwd" = {
+          device = "/dev/disk/by-uuid/88c17ed8-7b9c-405c-a88f-f29833f70d7c";
+          fsType = "btrfs";
+          options = [ "subvol=@pwd" "compress=zstd:1" "nofail" ];
+        };
+        "/home/makiru/Music" = {
+          device = "/dev/disk/by-uuid/88c17ed8-7b9c-405c-a88f-f29833f70d7c";
+          fsType = "btrfs";
+          options = [ "subvol=@music" "nofail" ];
+        };
       };
-    in
-    lib.mapAttrs (path: uuid: {
-      device = "/dev/disk/by-uuid/${uuid}";
-      fsType = "ntfs";
-      options = [
-        "uid=1000"
-        "nofail"
-      ];
-    }) ntfs-drives;
 # Kernel
   boot.kernelPackages = pkgs.linuxPackages_cachyos;
   # Define your hostname.
