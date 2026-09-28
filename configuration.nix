@@ -87,7 +87,7 @@ in
       lib.mapAttrs (path: uuid: {
         device = "/dev/disk/by-uuid/${uuid}";
         fsType = "ntfs";
-        options = [ "uid=1000" "nofail" ];
+        options = [ "uid=1000" "gid=users" "nofail" ];
       }) ntfs-drives // {
         "/home/makiru/Documents" = {
           device = "/dev/disk/by-uuid/88c17ed8-7b9c-405c-a88f-f29833f70d7c";
@@ -303,6 +303,7 @@ in
     claude-code
     amneziawg-go
     amneziawg-tools
+    r2modman
     (nvidiaLegacy580Free.settings.overrideAttrs (old: {
       meta = old.meta // { license = lib.licenses.mit; };
     }))
