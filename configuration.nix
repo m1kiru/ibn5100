@@ -297,7 +297,7 @@ in
     scrcpy
     audiosource
     stoat-desktop
-    discord
+    vesktop
     clock-rs
     btrfs-progs
     claude-code
