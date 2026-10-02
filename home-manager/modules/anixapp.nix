@@ -2,13 +2,13 @@
 
 let
   pname = "anixapp";
-  version = "0.1.55";
+  version = "0.1.58";
 
   # Взято напрямую из GitHub Releases (v0.1.55) через api.github.com;
   # sha256 посчитан вручную с реально скачанного файла, не выдуман.
   src = pkgs.fetchurl {
     url = "https://github.com/Maks1mio/anixapp/releases/download/v${version}/AnixApp-${version}.AppImage";
-    sha256 = "cec769b7f9ee50c2484b50c6aedb251d19331ca347f2943c17f936cb312e940a";
+    sha256 = "7b86b25a41dfbdc2bcaa7279f71b3a2406279d38f2995ab950551e7feda0f45d";
   };
 
   # Извлекаем содержимое AppImage только для того, чтобы забрать
