@@ -10,7 +10,7 @@ in
     [
       ./hardware-configuration.nix
       ./modules
-      #./modules/ports.nix
+      ./modules/zxc.nix
     ];
   # Zram
   zramSwap = {
