@@ -301,6 +301,8 @@ in
     clock-rs
     btrfs-progs
     claude-code
+    codex
+    opencode
     amneziawg-go
     amneziawg-tools
     r2modman
