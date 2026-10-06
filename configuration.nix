@@ -306,6 +306,7 @@ in
     amneziawg-tools
     r2modman
     pipx
+    nuclear
     (nvidiaLegacy580Free.settings.overrideAttrs (old: {
       meta = old.meta // { license = lib.licenses.mit; };
     }))
