@@ -10,7 +10,6 @@ in
     [
       ./hardware-configuration.nix
       ./modules
-      ./modules/zxc.nix
     ];
   # Zram
   zramSwap = {
@@ -306,6 +305,7 @@ in
     amneziawg-go
     amneziawg-tools
     r2modman
+    pipx
     (nvidiaLegacy580Free.settings.overrideAttrs (old: {
       meta = old.meta // { license = lib.licenses.mit; };
     }))
