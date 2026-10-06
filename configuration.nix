@@ -343,7 +343,7 @@ in
       text = ''
         mkdir -p /home/makiru/.local/share/Steam/compatibilitytools.d
         rm -rf /home/makiru/.local/share/Steam/compatibilitytools.d/proton-cachyos
-        cp -rL ${pkgs.proton-cachyos_x86_64_v3}/bin /home/makiru/.local/share/Steam/compatibilitytools.d/proton-cachyos
+        cp -rL ${pkgs.proton-cachyos_x86_64_v3} /home/makiru/.local/share/Steam/compatibilitytools.d/proton-cachyos
         chown -R makiru:users /home/makiru/.local/share/Steam/compatibilitytools.d/proton-cachyos
         '';
       deps = [];
