@@ -307,6 +307,7 @@ in
     r2modman
     pipx
     nuclear
+    nodejs
     (nvidiaLegacy580Free.settings.overrideAttrs (old: {
       meta = old.meta // { license = lib.licenses.mit; };
     }))
