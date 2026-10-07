@@ -308,6 +308,7 @@ in
     pipx
     nuclear
     nodejs
+    android-studio-for-platform
     (nvidiaLegacy580Free.settings.overrideAttrs (old: {
       meta = old.meta // { license = lib.licenses.mit; };
     }))
