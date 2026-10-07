@@ -65,10 +65,6 @@
         open-floating true
     }
 
-    window-rule {
-        match app-id=r#"^org\.keepassxc\.KeePassXC$"#
-        block-out-from "screen-capture"
-    }
 
     layer-rule {
         match namespace="^launcher$"
