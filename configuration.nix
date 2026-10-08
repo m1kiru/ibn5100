@@ -309,6 +309,7 @@ in
     nuclear
     nodejs
     android-studio-for-platform
+    rtk
     (nvidiaLegacy580Free.settings.overrideAttrs (old: {
       meta = old.meta // { license = lib.licenses.mit; };
     }))
